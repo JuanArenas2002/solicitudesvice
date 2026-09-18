@@ -1,13 +1,14 @@
 import { useState, type FormEvent } from 'react'
 import { FilePenLine, Users } from 'lucide-react'
 import {
-  Alert, AlertDescription, Badge, Button, Checkbox, DataTable, Dialog, Label, DialogContent, DialogDescription, DialogFooter, DialogHeader,
+  Alert, AlertDescription, Button, Checkbox, DataTable, Dialog, Label, DialogContent, DialogDescription, DialogFooter, DialogHeader,
   DialogTitle, FloatingInput, FloatingTextarea, Switch, type ColumnDef,
 } from '@juanarenas31/metrik-ui'
 import { catalogApi, usersApi } from '../api'
 import type { NewProductType, ProductType, User } from '../api/types'
 import { useAuth } from '../auth/AuthProvider'
 import { PERM } from '../constants'
+import { CountBadge } from '../components/CountBadge'
 import { IconButton } from '../components/IconButton'
 import { PageHeader } from '../components/PageHeader'
 import { QueryState } from '../components/QueryState'
@@ -155,7 +156,7 @@ export default function ProductsPage() {
       header: 'Revisores',
       cell: ({ row }: { row: { original: ProductType } }) => {
         const n = Object.values(assignments.data ?? {}).filter((ids) => ids.includes(row.original.id)).length
-        return n === 0 ? <Badge tone="warning" dot>Sin revisores</Badge> : <Badge tone="primary">{n}</Badge>
+        return <CountBadge count={n} label="revisores" emptyHint="Sin revisores: nadie ve las solicitudes de este producto" />
       },
     }] : []),
     {

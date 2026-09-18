@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import {
   Avatar, AvatarFallback, Button, Container, DropdownMenu, DropdownMenuContent, DropdownMenuItem,
   DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, ScrollArea, Sheet, SheetContent, SheetDescription,
@@ -7,6 +7,7 @@ import {
 } from '@juanarenas31/metrik-ui'
 import { useAuth } from '../auth/AuthProvider'
 import { PERM, ROLE_LABEL } from '../constants'
+import { ErrorBoundary } from './ErrorBoundary'
 import { NotificationsBell } from './NotificationsBell'
 
 const NAV = [
@@ -74,6 +75,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
 export function AppShell() {
   const { user } = useAuth()
   const [open, setOpen] = useState(false)
+  const location = useLocation()
   if (!user) return null
 
   return (
@@ -95,7 +97,10 @@ export function AppShell() {
       </Sheet>
 
       <main className="min-w-0 flex-1 lg:pl-64">
-        <Container className="py-8"><Outlet /></Container>
+        <Container className="py-8">
+          {/* Con `key` el error se limpia al navegar a otra pantalla. */}
+          <ErrorBoundary key={location.pathname}><Outlet /></ErrorBoundary>
+        </Container>
       </main>
     </div>
   )

@@ -7,6 +7,7 @@ import {
 import { catalogApi, usersApi } from '../api'
 import type { NewUser, Role, User } from '../api/types'
 import { useAuth } from '../auth/AuthProvider'
+import { CountBadge } from '../components/CountBadge'
 import { IconButton } from '../components/IconButton'
 import { PageHeader } from '../components/PageHeader'
 import { QueryState } from '../components/QueryState'
@@ -184,9 +185,9 @@ export default function UsersPage() {
         if (u.role !== 'ADMINISTRATIVO') return <span className="text-fg-muted">—</span>
         const ids = assignments.data?.[u.id] ?? []
         if (!assignments.data) return <span className="text-fg-muted">…</span>
-        if (ids.length === 0) return <Badge tone="warning" dot title="Sin productos asignados no ve ninguna solicitud">Sin productos</Badge>
         const names = ids.map((id) => products.data?.items.find((p) => p.id === id)?.name ?? `#${id}`)
-        return <div className="flex flex-wrap gap-1">{names.map((n) => <Badge key={n} tone="primary">{n}</Badge>)}</div>
+        return <CountBadge count={ids.length} label="productos asignados" names={names}
+          emptyHint="Sin productos asignados: no ve ninguna solicitud" />
       },
     },
     { header: 'Último acceso', cell: (u) => (u.last_login_at ? formatDateTime(u.last_login_at) : 'Nunca') },

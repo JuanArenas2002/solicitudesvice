@@ -136,7 +136,9 @@ export default function RequestsPage() {
       </QueryState>
       {creating && <NewRequestDialog onClose={() => setCreating(false)} />}
       {changing && (
-        <ChangeStatusDialog request={changing} onChanged={() => query.reload()} onClose={() => setChanging(null)} />
+        <ChangeStatusDialog
+          request={{ id: changing.id, status: changing.status, number: changing.request_number, product: changing.product_type_name, mentor: changing.mentor.name }}
+          onChanged={() => query.reload()} onClose={() => setChanging(null)} />
       )}
     </>
   )

@@ -187,7 +187,9 @@ function RequestView({ request, onChange }: { request: RequestDetail; onChange: 
         </TabsContent>
         <TabsContent value="history"><History request={request} /></TabsContent>
       </Tabs>
-      {changing && <ChangeStatusDialog request={request} onChanged={onChange} onClose={() => setChanging(false)} />}
+      {changing && <ChangeStatusDialog
+          request={{ id: request.id, status: request.status, number: request.request_number, product: request.product_type.name, mentor: request.mentor.name }}
+          onChanged={onChange} onClose={() => setChanging(false)} />}
       {askFor && (
         <ReasonDialog title={ACTIONS[askFor].label} label={ACTIONS[askFor].textLabel ?? 'Motivo'}
           required={ACTIONS[askFor].text === 'required'} pending={act.pending} error={act.error?.message}
